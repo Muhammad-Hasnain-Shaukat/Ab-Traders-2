@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model QuoteEnquiry {
+  id                    String      @id @default(uuid())
+  referenceNumber       String      @unique
+  fullName              String
+  companyName           String?
+  phone                 String
+  email                 String
+  city                  String
+  brandingRequirements  String
+  additionalNotes       String?
+  preferredContact      String      @default("whatsapp")
+  totalItemCount        Int
+  status                String      @default("PENDING")
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  items                 QuoteItemRecord[]
+}
+
+model QuoteItemRecord {
+  id              String        @id @default(uuid())
+  enquiryId       String
+  enquiry         QuoteEnquiry  @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  productId       String
+  productName     String
+  categoryName    String
+  material        String
+  capacity        String
+  quantity        Int
+  customBranding  Boolean       @default(false)
+  notes           String?
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
