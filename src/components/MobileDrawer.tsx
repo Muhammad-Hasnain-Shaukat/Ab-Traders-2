@@ -82,13 +82,20 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
       >
         {/* Header */}
         <div className="p-4 border-b border-beige flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded border border-gold/50 bg-charcoal flex items-center justify-center text-ivory font-serif text-xs font-semibold">
-              AB
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/images/logo-dark.png"
+              alt="AB TRADERS Logo"
+              className="h-9 w-auto object-contain"
+            />
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-base tracking-tight text-charcoal leading-none">
+                AB TRADERS
+              </span>
+              <span className="text-[8px] tracking-luxury uppercase text-charcoal-400 font-medium mt-0.5">
+                Packaging Solutions
+              </span>
             </div>
-            <span className="font-serif font-bold text-base tracking-tight text-charcoal">
-              AB TRADERS
-            </span>
           </div>
           <button
             ref={closeButtonRef}

@@ -82,6 +82,23 @@ export const HeroSlider: React.FC = () => {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
+  // Screen auto-adjuster: dynamically calculate 100% viewport height across mobile browsers
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    updateViewportHeight();
+    window.addEventListener('resize', updateViewportHeight);
+    window.addEventListener('orientationchange', updateViewportHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateViewportHeight);
+      window.removeEventListener('orientationchange', updateViewportHeight);
+    };
+  }, []);
+
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
   }, []);
@@ -151,30 +168,36 @@ export const HeroSlider: React.FC = () => {
       aria-label="Hero Packaging Highlights"
     >
       {/* ========================================================================= */}
-      {/* MOBILE LAYOUT (< md): Step 1 - First Item Only (Header & Text Group)      */}
+      {/* MOBILE LAYOUT (< md): Auto-adjusting hero for complete first-view fit     */}
       {/* ========================================================================= */}
-      <div className="md:hidden flex flex-col mt-12 pt-4 pb-4 px-4">
-        {/* 1. Header & Text Group with equal balanced spacing between all items */}
-        <div className="space-y-3.5">
-          {/* Section Badge (First item) */}
+      <div
+        className="md:hidden flex flex-col justify-between px-4 sm:px-6 pt-13 sm:pt-14 pb-2 sm:pb-3 w-full min-h-[480px] h-[100svh] max-h-[100svh]"
+        style={{
+          height: 'calc(var(--vh, 1vh) * 100)',
+          maxHeight: 'calc(var(--vh, 1vh) * 100)',
+        }}
+      >
+        {/* 1. Header & Text Group (Always completely visible at top) */}
+        <div className="shrink-0 space-y-1.5 sm:space-y-2">
+          {/* Section Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100/90 border border-sky-200 text-[10px] uppercase tracking-wider text-sky-800 font-bold shadow-2xs">
             <span className="text-sky-600">●</span>
             <span>{activeSlide.tag}</span>
           </div>
 
-          {/* Headline (Second item) */}
-          <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-[1.14]">
+          {/* Headline */}
+          <h1 className="font-sans text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-[1.12]">
             {activeSlide.headline}
           </h1>
 
-          {/* Supporting line (Third item) */}
+          {/* Supporting line */}
           <p className="text-xs text-slate-600 font-normal leading-relaxed line-clamp-2">
             {activeSlide.supporting}
           </p>
         </div>
 
-        {/* 2. Photography Frame (Item 2) - balanced height to eliminate bottom void */}
-        <div className="relative w-full h-[570px] xs:h-[610px] sm:h-[650px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm mt-4.5">
+        {/* 2. Photography Frame - Flexibly auto-adjusts to fill remaining screen height */}
+        <div className="flex-1 min-h-[180px] relative w-full rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm my-2 sm:my-2.5">
           {SLIDES.map((slide, index) => {
             const isActive = index === currentSlide;
             return (
@@ -198,20 +221,20 @@ export const HeroSlider: React.FC = () => {
           })}
         </div>
 
-        {/* 3. Actions (Item 3) - Sleek compact mobile button size */}
-        <div className="grid grid-cols-2 gap-2.5 mt-4">
+        {/* 3. Actions - Two buttons always anchored comfortably on first view */}
+        <div className="shrink-0 grid grid-cols-2 gap-2.5 sm:gap-3 pb-0.5">
           <Link
             to={activeSlide.primaryBtnLink}
-            className="inline-flex items-center justify-center gap-1 bg-[#0284C7] hover:bg-[#0369A1] text-white text-[11px] font-bold py-2 px-2.5 rounded-lg tracking-normal shadow-xs active:scale-[0.98] text-center leading-tight"
+            className="inline-flex items-center justify-center gap-1.5 bg-[#0284C7] hover:bg-[#0369A1] text-white text-xs font-bold py-2.5 sm:py-3 px-2.5 rounded-lg tracking-normal shadow-xs active:scale-[0.98] text-center leading-tight"
           >
             <span>{activeSlide.primaryBtnText}</span>
-            <ArrowRight className="w-3 h-3 text-white shrink-0" />
+            <ArrowRight className="w-3.5 h-3.5 text-white shrink-0" />
           </Link>
 
           {activeSlide.secondaryBtnText && (
             <Link
               to={activeSlide.secondaryBtnLink || '/quote'}
-              className="inline-flex items-center justify-center bg-white hover:bg-sky-50 text-slate-800 border border-slate-300 text-[11px] font-bold py-2 px-2.5 rounded-lg tracking-normal shadow-2xs text-center leading-tight active:scale-[0.98]"
+              className="inline-flex items-center justify-center bg-white hover:bg-sky-50 text-slate-800 border border-slate-300 text-xs font-bold py-2.5 sm:py-3 px-2.5 rounded-lg tracking-normal shadow-2xs text-center leading-tight active:scale-[0.98]"
             >
               <span>{activeSlide.secondaryBtnText}</span>
             </Link>

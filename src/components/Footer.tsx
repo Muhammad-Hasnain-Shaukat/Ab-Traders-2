@@ -10,10 +10,12 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-slate-800">
           {/* Brand & Summary */}
           <div className="lg:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded border border-gold/60 bg-charcoal flex items-center justify-center text-ivory font-serif text-sm font-semibold">
-                AB
-              </div>
+            <Link to="/" className="flex items-center gap-3 group">
+              <img
+                src="/images/logo-light.png"
+                alt="AB TRADERS Logo"
+                className="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
               <div className="flex flex-col">
                 <span className="font-serif text-xl font-bold tracking-tight text-ivory">
                   AB TRADERS

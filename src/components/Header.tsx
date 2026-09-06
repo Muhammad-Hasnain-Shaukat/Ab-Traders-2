@@ -46,9 +46,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenSearch }
               </button>
 
               <Link to="/" className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white text-[#0284C7] flex items-center justify-center font-black text-xs sm:text-sm tracking-tight shadow-sm transition-transform duration-200 group-hover:scale-105">
-                  AB
-                </div>
+                <img
+                  src="/images/logo-light.png"
+                  alt="AB TRADERS Logo"
+                  className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105 brightness-110"
+                />
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-sm sm:text-base font-extrabold tracking-tight text-white leading-none">
                     AB TRADERS
